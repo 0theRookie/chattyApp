@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class Messages extends Component {
+class Message extends Component {
     constructor(props){
         super(props);
     }
@@ -8,14 +8,14 @@ class Messages extends Component {
         return (
             <div className="message">
                 <span className="message-username">
-                    Anonymous1
+                {this.props.message.username}
                 </span>
                 <span className="message-content">
-                    I won't be impressed with technology until I can download food.
+                    {this.props.message.content}
                 </span>
             </div>
         )
     }
 }
 
-export default Messages;
+export default Message;

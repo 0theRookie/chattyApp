@@ -4,10 +4,10 @@ import MessageList from './MessageList.jsx';
 import Nav from './Nav.jsx';
 
 class App extends Component {
-  constructor(props){
-    super(props);
+  constructor(){
+    super();
     
-    this.setState({
+    this.state = {
       currentUser: {name: 'Bob'}, // optional. if currentUser is not defined, it means the user is Anonymous
       messages: [
         {
@@ -19,14 +19,21 @@ class App extends Component {
           content: 'No, I think you lost them. You lost your marbles Bob. You lost them for good.'
         }
       ]
+    }
+    this.changeUsername = this.changeUsername.bind(this);
+  }
+  changeUsername(newUsername){
+    this.setState({
+      currentUser: {name: newUsername}
     })
+    console.log('This worked: ', newUsername);
   }
   render() {
     return (
       <div className='react-container'>
         <Nav />
-        <MessageList />
-        <ChatBar />
+        <MessageList messages={this.state.messages}/>
+        <ChatBar changeUsername={this.changeUsername} user={this.state.currentUser.name}/>
       </div>
      
     );
