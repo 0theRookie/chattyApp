@@ -6,7 +6,6 @@ import Nav from './Nav.jsx';
 class App extends Component {
   constructor(){
     super();
-    
     this.state = {
       currentUser: {name: 'Bob'}, // optional. if currentUser is not defined, it means the user is Anonymous
       messages: [
@@ -25,17 +24,37 @@ class App extends Component {
     this.changeUsername = this.changeUsername.bind(this);
     this.postMessage = this.postMessage.bind(this);
   }
+
   componentDidMount() {
     console.log('componentDidMount <App />');
-    setTimeout(() => {
-      console.log('Simulating incoming message');
-      // Add a new message to the list of messages in the data store
-      const newMessage = {id: 3, username: 'Michelle', content: 'Hello there!'};
-      const messages = this.state.messages.concat(newMessage)
-      // Update the state of the app component.
-      // Calling setState will trigger a call to render() in App and all child components.
-      this.setState({messages: messages})
-    }, 3000);
+    this.socket  = new WebSocket('ws://localhost:3001');
+    // Send text to all users through the server
+
+    // this is just stupid demo code, we don't actually want to end a stupid message on componentDidMount
+    setTimeout(() =>
+      this.sendText({id: 0, username: 'yo dawg', content: 'xzbit'}),
+      1000
+    );
+
+
+
+  }
+
+  sendText({ id, username, content }) {
+    // Construct a msg object containing the data the server needs to process the message from the chat client.
+    const msg = {
+      type: "sendMessage",
+      content,
+      username,
+      id,
+    };
+
+    console.log("sending");
+    // Send the msg object as a JSON-formatted string.
+    this.socket.send(JSON.stringify(msg));
+    
+    // Blank the text input element, ready to receive the next line of text from the user.
+    // document.getElementById("text").value = "";
   }
 
   changeUsername(newUsername){
@@ -44,6 +63,7 @@ class App extends Component {
     })
     // console.log('This worked: ', newUsername);
   }
+  //move this method into ChatBar.jsx instead and refactor
   postMessage(event){
     // console.log("something was typed in the message box");
     const inputField = event.target;
@@ -52,13 +72,12 @@ class App extends Component {
 
     if(event.keyCode === 13){
       // console.log('posting: ', inputField.value);
-      this.setState({
-        messages: post
-      })
+      this.sendText(post[0]);
       inputField.value = '';
     }
     
   }
+
   render() {
     return (
       <div className='react-container'>
