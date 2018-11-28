@@ -6,7 +6,7 @@ class Message extends Component {
     }
     render(){
         return (
-            <div className="message">
+            <div  className="message">
                 <span className="message-username">
                 {this.props.message.username}
                 </span>
