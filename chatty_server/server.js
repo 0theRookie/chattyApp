@@ -15,35 +15,47 @@ const server = express()
 // Create the WebSockets server
 const wss = new SocketServer({ server });
 
-// Set up a callback that will run when a client connects to the server
 // When a client connects they are assigned a socket, represented by
 // the ws parameter in the callback.
 wss.on('connection', (ws) => {
   console.log('Client connected');
 
   ws.on('message', (message) => {
-
     const msg = JSON.parse(message);
-    const msgObj = {
-      id: uuid(),
-      username: msg.username,
-      content: msg.content
+    let msgObj;
+    if (msg.type === 'message') {
+      msgObj = userMessage(msg);
+    } else if (msg.type === 'notification') {
+      msgObj = notification(msg);
     }
-    if(msgObj.content.length > 0){
-      console.log(`User ${msg.username} said: ${msg.content} ===> type: ${msg.type}`);
-
+    
+    
       wss.clients.forEach((client) => {
         client.send(JSON.stringify(msgObj));
       })
-    }
-
     
-    // console.log(`User ${msg.username} said: ${msg.content} ===> type: ${msg.type}`);
-
-    // wss.clients.forEach((client) => {
-    //   client.send(JSON.stringify(msgObj));
-    // })
   });
   // Set up a callback for when a client closes the socket. This usually means they closed their browser.
   ws.on('close', () => console.log('Client disconnected'));
+
+  function userMessage({username, content, type}){
+    const msgObj = {
+      id: uuid(),
+      username,
+      content
+    }
+    if(msgObj.content.length > 0){
+      console.log(`User ${username} said: ${content} ===> type: ${type}`);
+      return msgObj;
+    }
+  }
+
+  function notification({content}){
+    const msgObj = {
+      id: uuid(),
+      content
+    }
+    console.log(content)
+    return msgObj;
+  }
 });

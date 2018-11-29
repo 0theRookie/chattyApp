@@ -5,13 +5,18 @@ class Message extends Component {
         super(props);
     }
     showMessage(){
+        console.log('Calling showMessage()...');
         const {message} = this.props;
-
         switch(message.type){
-            case 'text':
-            case 'message': //may take this out later if message cannot be a type
-            default:
+            case 'notification':
+            console.log(`Notification type ${message.type}`);
             return (<span className="message-content">{message.content}</span>)
+            break;
+            // case 'text':
+            case 'message': //may take this out later if message cannot be a type
+            console.log(`Message type ${message.type}`);
+            default:
+                return (<span className="message-content">{message.content}</span>)
         }
     }
     render(){

@@ -10,23 +10,34 @@ class App extends Component {
       currentUser: {name: ''}, //if currentUser is not defined, it means the user is Anonymous
       messages: []
     }
-    this.changeUsername = this.changeUsername.bind(this);
-    this.sendText = this.sendText.bind(this);
+    this.changeUsername   = this.changeUsername.bind(this);
+    this.sendMessage      = this.sendMessage.bind(this);
+    this.sendNotification = this.sendNotification.bind(this);
   }
 
   componentDidMount() {
     console.log('componentDidMount <App />');
-    this.socket  = new WebSocket('ws://localhost:3001');
+    this.socket = new WebSocket('ws://localhost:3001');
     // Send text to all users through the server
     this.socket.onmessage = (event) => {
-      const newMessage = JSON.parse(event.data);
+      const newMessage    = JSON.parse(event.data);
       this.setState({
         messages: [...this.state.messages, newMessage]
       })
     }
   }
 
-  sendText({ content }) {
+  sendNotification(content){
+    const msg = {
+      type: 'notification',
+      content,
+    }
+    console.log(`Attemping to send notification =====>  ${content}`);
+    
+    this.socket.send(JSON.stringify(msg));
+  }
+
+  sendMessage({ content }) {
     // Construct a msg object containing the data the server needs to process the message from the chat client.
     const msg = {
       type: 'message',
@@ -34,16 +45,22 @@ class App extends Component {
       username: this.state.currentUser.name || 'Anonymous',
     };
     
-    console.log(`Attemping to send =====>  ${JSON.stringify(msg.content)}`);
+    console.log(`Attemping to send message =====>  ${JSON.stringify(msg.content)}`);
     // Send the msg object as a JSON-formatted string.
     this.socket.send(JSON.stringify(msg));
   }
 
   changeUsername(newUsername){
-    console.log(`${this.state.currentUser.name || 'Anonymous'} changing name to ${newUsername}`);
-      this.setState({
-        currentUser: {name: newUsername}
-      })
+    const currentUsername = this.state.currentUser.name || 'Anonymous';
+    newUsername = newUsername || 'Anonymous';
+      if(currentUsername !== newUsername){
+        console.log(`${currentUsername} changing name to ${newUsername}`);
+
+        this.setState({
+          currentUser: {name: newUsername}
+        })
+        this.sendNotification(`${currentUsername} has changed their name to ${newUsername}.`);
+      }
   }
 
   render() {
@@ -54,7 +71,8 @@ class App extends Component {
         <ChatBar 
           changeUsername={this.changeUsername} 
           user={this.state.currentUser.name}
-          sendText = {this.sendText}
+          sendMessage = {this.sendMessage}
+          sendNotification = {this.sendNotification}
         />
       </div>
      
