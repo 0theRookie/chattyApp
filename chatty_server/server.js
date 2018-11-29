@@ -21,7 +21,22 @@ const wss = new SocketServer({ server });
 wss.on('connection', (ws) => {
   console.log('Client connected');
   ws.send('User joined, yooooo');
-  //display received message to terminal
+
+  //display the received message to terminal
+  // ws.on('message', (messageObj) => {
+  //   ws.send(`Message received ======> ${messageObj}`)
+  //   console.log(messageObj);
+  // });
+  ws.on('message', (message) => {
+    const msg = JSON.parse(message);
+    
+    console.log(`User ${msg.username} said ${msg.content}`);
+    wss.clients.forEach((client) => {
+      if(client !== ws && client.readyState === 1){
+        client.send(message);
+      }
+    })
+  });
   // Set up a callback for when a client closes the socket. This usually means they closed their browser.
   ws.on('close', () => console.log('Client disconnected'));
 });
