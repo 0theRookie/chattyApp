@@ -4,15 +4,21 @@ class Message extends Component {
     constructor(props){
         super(props);
     }
+    showMessage(){
+        const {message} = this.props;
+
+        switch(message.type){
+            case 'text':
+            case 'message': //may take this out later if message cannot be a type
+            default:
+            return (<span className="message-content">{message.content}</span>)
+        }
+    }
     render(){
         return (
             <div  className="message">
-                <span className="message-username">
-                {this.props.message.username}
-                </span>
-                <span className="message-content">
-                    {this.props.message.content}
-                </span>
+                <span className="message-username">{this.props.message.username}</span>
+                {this.showMessage()}
             </div>
         )
     }

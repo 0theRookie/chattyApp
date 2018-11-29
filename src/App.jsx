@@ -40,7 +40,7 @@ class App extends Component {
   }
 
   changeUsername(newUsername){
-    // console.log('newUsername: ', newUsername)
+    console.log(`${this.state.currentUser.name || 'Anonymous'} changing name to ${newUsername}`);
       this.setState({
         currentUser: {name: newUsername}
       })

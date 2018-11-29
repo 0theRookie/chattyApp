@@ -10,6 +10,8 @@ class ChatBar extends Component {
     }
 
     changeUser(event){
+        //might not need these variables if it's possible to pass
+        //the current this.state to app directly
         const usernameField  = event.target;
         const usernameInput  = usernameField.value;
         if(event.keyCode === 13){
