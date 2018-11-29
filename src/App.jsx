@@ -7,7 +7,7 @@ class App extends Component {
   constructor(){
     super();
     this.state = {
-      currentUser: {name: 'Bob'}, // optional. if currentUser is not defined, it means the user is Anonymous
+      currentUser: {name: ''}, // optional. if currentUser is not defined, it means the user is Anonymous
       messages: []
     }
     this.changeUsername = this.changeUsername.bind(this);
@@ -18,7 +18,6 @@ class App extends Component {
     console.log('componentDidMount <App />');
     this.socket  = new WebSocket('ws://localhost:3001');
     // Send text to all users through the server
-    // debugger;
     this.socket.onmessage = (event) => {
       const newMessage = JSON.parse(event.data);
       console.log(newMessage.content);
@@ -26,14 +25,6 @@ class App extends Component {
         messages: [...this.state.messages, newMessage]
       })
     }
-    // this is just stupid demo code, we don't actually want to end a stupid message on componentDidMount
-    // setTimeout(() =>
-    //   this.sendText({id: 0, username: 'yo dawg', content: 'xzbit'}),
-    //   1000
-    // );
-
-
-
   }
 
   sendText({ content }) {
@@ -41,22 +32,19 @@ class App extends Component {
     const msg = {
       type: 'message',
       content,
-      username: this.state.currentUser.name,
+      username: this.state.currentUser.name || 'Anonymous',
     };
     
     console.log(`Attemping to send =====>  ${JSON.stringify(msg.content)}`);
     // Send the msg object as a JSON-formatted string.
     this.socket.send(JSON.stringify(msg));
-    
-    // Blank the text input element, ready to receive the next line of text from the user.
-    // document.getElementById('text').value = '';
   }
 
   changeUsername(newUsername){
-    this.setState({
-      currentUser: {name: newUsername}
-    })
-    // console.log('This worked: ', newUsername);
+    // console.log('newUsername: ', newUsername)
+      this.setState({
+        currentUser: {name: newUsername}
+      })
   }
   //move this method into ChatBar.jsx instead and refactor
   // postMessage(event){
