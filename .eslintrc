@@ -16,7 +16,8 @@
     "react/jsx-uses-vars": 2,
     "react/react-in-jsx-scope": 2,
     "react/prop-types": 0,
-    "no-unused-vars": 1
+    "no-unused-vars": 1,
+    "no-undef": 1
   },
   "plugins": [
     "react"

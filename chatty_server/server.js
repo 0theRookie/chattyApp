@@ -2,7 +2,7 @@
 
 const express = require('express');
 const SocketServer = require('ws').Server;
-
+const uuid = require('uuid/v4');
 // Set the port to 3001
 const PORT = 3001;
 
@@ -20,7 +20,7 @@ const wss = new SocketServer({ server });
 // the ws parameter in the callback.
 wss.on('connection', (ws) => {
   console.log('Client connected');
-  ws.send('User joined, yooooo');
+  // console.log('User joined, yooooo');
 
   //display the received message to terminal
   // ws.on('message', (messageObj) => {
@@ -29,11 +29,15 @@ wss.on('connection', (ws) => {
   // });
   ws.on('message', (message) => {
     const msg = JSON.parse(message);
-
-    console.log(`User ${msg.username} said ${msg.content}`);
+    const msgObj = {
+      id: uuid(),
+      username: msg.username,
+      content: msg.content
+    }
+    console.log(`User ${msg.username} said: ${msg.content} ===> type: ${msg.type}`);
     wss.clients.forEach((client) => {
-      
-        client.send(message);
+
+      client.send(JSON.stringify(msgObj));
       
     })
   });

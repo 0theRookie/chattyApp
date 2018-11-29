@@ -20,8 +20,11 @@ class App extends Component {
     // Send text to all users through the server
     // debugger;
     this.socket.onmessage = (event) => {
-      // const newMessage = JSON.parse(event.data);
-      console.log(newMessage);
+      const newMessage = JSON.parse(event.data);
+      console.log(newMessage.content);
+      this.setState({
+        messages: [...this.state.messages, newMessage]
+      })
     }
     // this is just stupid demo code, we don't actually want to end a stupid message on componentDidMount
     // setTimeout(() =>
