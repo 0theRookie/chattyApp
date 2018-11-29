@@ -7,7 +7,7 @@ class App extends Component {
   constructor(){
     super();
     this.state = {
-      currentUser: {name: ''}, // optional. if currentUser is not defined, it means the user is Anonymous
+      currentUser: {name: ''}, //if currentUser is not defined, it means the user is Anonymous
       messages: []
     }
     this.changeUsername = this.changeUsername.bind(this);
@@ -20,7 +20,6 @@ class App extends Component {
     // Send text to all users through the server
     this.socket.onmessage = (event) => {
       const newMessage = JSON.parse(event.data);
-      console.log(newMessage.content);
       this.setState({
         messages: [...this.state.messages, newMessage]
       })
@@ -46,20 +45,6 @@ class App extends Component {
         currentUser: {name: newUsername}
       })
   }
-  //move this method into ChatBar.jsx instead and refactor
-  // postMessage(event){
-  //   // console.log('something was typed in the message box');
-  //   const inputField = event.target;
-  //   const newPost    = { id: Date.now(), username: this.state.currentUser.name, content: inputField.value};
-  //   const post       = this.state.messages.concat(newPost);
-
-  //   if(event.keyCode === 13){
-  //     // console.log('posting: ', inputField.value);
-  //     this.sendText(post[0]);
-  //     inputField.value = '';
-  //   }
-    
-  // }
 
   render() {
     return (

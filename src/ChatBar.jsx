@@ -4,9 +4,8 @@ class ChatBar extends Component {
     constructor(props){
         super(props);
 
-        //uncomment if changing state in app doesn't work
         this.state = {
-            username: '',
+            username: this.props.user
         }
     }
 
@@ -24,17 +23,14 @@ class ChatBar extends Component {
         });
     }
     createMsgObj(event){
-        // console.log("something was typed in the message box");
         const inputField = event.target;
-        const newPost    = { 
-            //id key will not be necessary when websocket handles unique keys
+        const newPost    = {
             id: '', 
             username: '', 
             content: inputField.value
         };
        
         if(event.keyCode === 13){
-          // console.log('posting: ', inputField.value);
           this.props.sendText(newPost);
           inputField.value = '';
         }
