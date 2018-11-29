@@ -8,18 +8,7 @@ class App extends Component {
     super();
     this.state = {
       currentUser: {name: 'Bob'}, // optional. if currentUser is not defined, it means the user is Anonymous
-      messages: [
-        {
-          username: 'Bob',
-          content: 'Has anyone seen my marbles?',
-          id: '123'
-        },
-        {
-          username: 'Anonymous',
-          content: 'No, I think you lost them. You lost your marbles Bob. You lost them for good.',
-          id: '435'
-        }
-      ]
+      messages: []
     }
     this.changeUsername = this.changeUsername.bind(this);
     this.sendText = this.sendText.bind(this);
@@ -29,7 +18,11 @@ class App extends Component {
     console.log('componentDidMount <App />');
     this.socket  = new WebSocket('ws://localhost:3001');
     // Send text to all users through the server
-
+    // debugger;
+    this.socket.onmessage = (event) => {
+      // const newMessage = JSON.parse(event.data);
+      console.log(newMessage);
+    }
     // this is just stupid demo code, we don't actually want to end a stupid message on componentDidMount
     // setTimeout(() =>
     //   this.sendText({id: 0, username: 'yo dawg', content: 'xzbit'}),
