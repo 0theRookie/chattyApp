@@ -39,9 +39,6 @@ class ChatBar extends Component {
           inputField.value = '';
         }
       }
-      componentDidMount(){
-
-      }
     render(){
         return (
             <footer className="chatbar">

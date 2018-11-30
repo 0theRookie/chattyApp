@@ -7,8 +7,9 @@ class App extends Component {
   constructor(){
     super();
     this.state = {
-      currentUser: {name: ''}, //if currentUser is not defined, it means the user is Anonymous
-      messages: []
+      currentUser: {name: ''}, //if currentUser is not defined, it means they're Anonymous
+      messages: [],
+      clientsSize: ''
     }
     this.changeUsername   = this.changeUsername.bind(this);
     this.sendMessage      = this.sendMessage.bind(this);
@@ -21,9 +22,17 @@ class App extends Component {
     // Send text to all users through the server
     this.socket.onmessage = (event) => {
       const newMessage    = JSON.parse(event.data);
-      this.setState({
-        messages: [...this.state.messages, newMessage]
-      })
+      // debugger;
+      if(newMessage.type === 'clientsSize'){
+        this.setState({
+          clientsSize: newMessage.content
+        })
+      } else {
+        this.setState({
+          messages: [...this.state.messages, newMessage]
+        })
+      }
+      
     }
   }
 
@@ -66,7 +75,7 @@ class App extends Component {
   render() {
     return (
       <div className='react-container'>
-        <Nav />
+        <Nav clientsSize={this.state.clientsSize}/>
         <MessageList messages={this.state.messages}/>
         <ChatBar 
           changeUsername={this.changeUsername} 

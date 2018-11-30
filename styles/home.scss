@@ -78,8 +78,7 @@ body {
   right: 0;
   top: 0;
 }
-
-.navbar-brand {
+@mixin navbar-brand {
   color: inherit;
   display: block;
   float: left;
@@ -89,4 +88,13 @@ body {
   line-height: 60px;
   padding: 0 10px;
   text-decoration: none;
+}
+.navbar-brand {
+  @include navbar-brand;
+}
+.navbar-users-size {
+  @include navbar-brand;
+  float: right;
+  font-weight: 400;
+  font-size: 16px;
 }
