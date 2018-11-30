@@ -3,7 +3,7 @@
 
 * A functional ReactJS instant messaging app utilizing WebSocket.
 
-<!-- !["]() -->
+!["What it looks like."](https://github.com/0theRookie/chattyApp/blob/master/docs/Screen%20Shot%202018-11-29%20at%209.03.13%20PM.png)
 ### Usage
 
 * Clone this `git@github.com:0theRookie/chattyApp.git`in your CLI, or you can click "Clone or Download"
