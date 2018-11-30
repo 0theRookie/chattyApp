@@ -1,4 +1,4 @@
-#Chatty
+# Chatty
 =====================
 
 * A functional ReactJS instant messaging app utilizing WebSocket.
