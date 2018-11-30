@@ -11,7 +11,7 @@ const server = express()
 const wss = new SocketServer({ server });
 
 wss.on('connection', (ws) => {
-
+  //data for user counter in nav bar
   const size = { 
     content: `There are ${wss.clients.size} users online.`,
     type: 'clientsSize'
@@ -19,15 +19,17 @@ wss.on('connection', (ws) => {
   wss.clients.forEach(client => {
     client.send(JSON.stringify(size));
   })
-
+  //decides what type of message is being received and formats into corresponding obj
   ws.on('message', (message) => {
     const msg = JSON.parse(message);
     let msgObj;
+
     if (msg.type === 'message') {
       msgObj = userMessage(msg);
     } else if (msg.type === 'notification') {
       msgObj = notification(msg);
     }
+    //sends returned obj from either func
     wss.clients.forEach((client) => {
       client.send(JSON.stringify(msgObj));
     })
@@ -36,6 +38,7 @@ wss.on('connection', (ws) => {
 
   ws.on('close', () => {
     wss.clients.forEach(client => {
+      //changes user counter when any user leaves
       const size = { 
         content: `There are ${wss.clients.size} users online.`,
         type: 'clientsSize'

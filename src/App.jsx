@@ -7,7 +7,7 @@ class App extends Component {
   constructor(){
     super();
     this.state = {
-      currentUser: {name: ''}, //if currentUser is not defined, it means they're Anonymous
+      currentUser: {name: ''}, //if currentUser is an empty string, it defaults to Anonymous
       messages: [],
       clientsSize: ''
     }
@@ -20,6 +20,7 @@ class App extends Component {
     this.socket = new WebSocket('ws://localhost:3001');
     this.socket.onmessage = (event) => {
       const newMessage    = JSON.parse(event.data);
+      //validates the type of data, clientsSize is for user counter in nav bar
       if(newMessage.type === 'clientsSize'){
         this.setState({
           clientsSize: newMessage.content
@@ -33,7 +34,7 @@ class App extends Component {
     }
   }
 
-  sendNotification(content){
+  sendNotification(content) {
     const msg = {
       type: 'notification',
       content,
@@ -51,7 +52,7 @@ class App extends Component {
     this.socket.send(JSON.stringify(msg));
   }
 
-  changeUsername(newUsername){
+  changeUsername(newUsername) {
     const currentUsername = this.state.currentUser.name || 'Anonymous';
     newUsername = newUsername || 'Anonymous';
       if(currentUsername !== newUsername){

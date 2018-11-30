@@ -4,12 +4,12 @@ class Message extends Component {
     constructor(props){
         super(props);
     }
+    //decides whether or not this message is a notification
     showMessage(){
         const message = this.props.message;
         switch(message.type){
             case 'notification':
             return (<span className="message system">{message.content}</span>)
-            case 'message': 
             default:
                 return (<span className="message-content">{message.content}</span>)
         }

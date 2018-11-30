@@ -9,7 +9,7 @@ class ChatBar extends Component {
         }
         this.changeUser = this.changeUser.bind(this);
     }
-
+    //changes username state in app
     changeUser(event){
         const usernameField  = event.target;
         const usernameInput  = usernameField.value;
@@ -18,18 +18,18 @@ class ChatBar extends Component {
             usernameField.blur();
         }
     }
-
+    //allows changing of username in ChatBar user field
     changeUserState(usernameInput){
         this.setState({
             username: usernameInput
         });
     }
-
+    //sends messages to app
     createMsgObj(event){
         const inputField = event.target;
         const newPost    = {
             id: '', 
-            username: '', 
+            username: '',
             content: inputField.value
         };
         if(event.keyCode === 13){
@@ -37,6 +37,7 @@ class ChatBar extends Component {
           inputField.value = '';
         }
       }
+
     render(){
         return (
             <footer className="chatbar">
