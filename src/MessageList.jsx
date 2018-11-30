@@ -6,8 +6,7 @@ class MessageList extends Component {
         super(props);
     }
     makeMessage(){
-        //for each object, return a message to be posted
-        return this.props.messages.map(message => <Message message={message} key={message.id} />);
+        return this.props.messages.map(message => <Message message={message} messageType={message.type} key={message.id} />);
     }
     render(){
         const messages = this.makeMessage();

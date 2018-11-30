@@ -35,7 +35,6 @@ wss.on('connection', (ws) => {
   });
 
   ws.on('close', () => {
-    console.log('Client disconnected');
     wss.clients.forEach(client => {
       const size = { 
         content: `There are ${wss.clients.size} users online.`,
@@ -50,7 +49,8 @@ wss.on('connection', (ws) => {
     const msgObj = {
       id: uuid(),
       username,
-      content
+      content,
+      type: 'message'
     }
     if(msgObj.content.length > 0){
       return msgObj;
@@ -60,7 +60,8 @@ wss.on('connection', (ws) => {
   function notification({ content }){
     const msgObj = {
       id: uuid(),
-      content
+      content,
+      type: 'notification'
     }
     return msgObj;
   }

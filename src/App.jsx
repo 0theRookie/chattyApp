@@ -18,7 +18,6 @@ class App extends Component {
 
   componentDidMount() {
     this.socket = new WebSocket('ws://localhost:3001');
-    // Send text to all users through the server
     this.socket.onmessage = (event) => {
       const newMessage    = JSON.parse(event.data);
       if(newMessage.type === 'clientsSize'){
@@ -39,7 +38,6 @@ class App extends Component {
       type: 'notification',
       content,
     }
-    
     this.socket.send(JSON.stringify(msg));
   }
 
@@ -49,6 +47,7 @@ class App extends Component {
       content,
       username: this.state.currentUser.name || 'Anonymous',
     };
+    if(msg.content)
     this.socket.send(JSON.stringify(msg));
   }
 

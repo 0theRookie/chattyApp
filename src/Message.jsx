@@ -5,11 +5,10 @@ class Message extends Component {
         super(props);
     }
     showMessage(){
-        const {message} = this.props;
-
+        const message = this.props.message;
         switch(message.type){
             case 'notification':
-            return (<span className="message-content">{message.content}</span>)
+            return (<span className="message system">{message.content}</span>)
             case 'message': 
             default:
                 return (<span className="message-content">{message.content}</span>)
